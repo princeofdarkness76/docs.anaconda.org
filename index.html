@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>XNU-Wrapped-Python-Arduino-Experimental by princeofdarkness76</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">XNU-Wrapped-Python-Arduino-Experimental</h1>
+      <h2 class="project-tagline">XNU-Snakebite</h2>
+      <a href="https://github.com/princeofdarkness76/docs.anaconda.org" class="btn">View on GitHub</a>
+      <a href="https://github.com/princeofdarkness76/docs.anaconda.org/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/princeofdarkness76/docs.anaconda.org/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>There is only one domain for this site - docs.anaconda.org - but there is a "test" site located at docs.anaconda.org/draft/.</p>
+
+<p>Although some parts of the continuum.io site have traditionally been pushed to a test server each Tuesday and to the main server each Thursday, any contributor is welcome to deploy changes to docs.anaconda.org/draft and to docs.anaconda.org at any time.</p>
+
+<p>The process for editing docs.anaconda.org contains a few steps. Overview: clone this repository locally, install dependencies, create a new branch, make your changes, test them locally with Hyde, run deploydraft.sh to push the changes to docs.anaconda.org/draft, once you're satisfied with them push your new branch to GitHub, make a pull request, and merge your new branch into the master branch, then run deploy.sh to push your changes to docs.anaconda.org.</p>
+
+<h2>
+<a id="clone-this-repository-locally" class="anchor" href="#clone-this-repository-locally" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Clone this repository locally:</h2>
+
+<p>If you do not already have a GitHub working directory, go to your home directory and make one.</p>
+
+<pre><code>cd
+mkdir githubwork
+</code></pre>
+
+<p>Go to your GitHub working directory:</p>
+
+<p><code>cd ~/githubwork</code></p>
+
+<p>Clone the repository:</p>
+
+<p><code>git clone git@github.com:Anaconda-Server/docs.anaconda.org.git</code></p>
+
+<p>This creates a local copy of this repository.</p>
+
+<h2>
+<a id="install-dependencies" class="anchor" href="#install-dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install dependencies:</h2>
+
+<pre><code>cd docs.anaconda.org
+conda env create
+source activate docs.anaconda.org
+</code></pre>
+
+<p>Running <code>conda env create</code> without any arguments creates a new environment using the environment.yml file in the current directory, which was downloaded from the repository itself.</p>
+
+<p>You only need to clone the repository and install dependencies once, but all the following steps will be done each time you make a new change.</p>
+
+<h2>
+<a id="create-a-new-branch" class="anchor" href="#create-a-new-branch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create a new branch:</h2>
+
+<p>Enter the repository and make sure the master branch is selected:</p>
+
+<pre><code>cd ~/githubwork/docs.anaconda.org
+git checkout master
+</code></pre>
+
+<p>Make a new branch, replacing make-some-change with a branch name that describes the change you are making:</p>
+
+<p><code>git checkout -b make-some-change</code></p>
+
+<h2>
+<a id="make-your-changes" class="anchor" href="#make-your-changes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Make your changes:</h2>
+
+<p>Use local editors to change the docs files as necessary. Edit the source files in the content directory, not the Hyde output files in the deploy directory.</p>
+
+<h2>
+<a id="test-your-changes-locally-with-hyde" class="anchor" href="#test-your-changes-locally-with-hyde" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test your changes locally with Hyde:</h2>
+
+<p>We use the Hyde engine which uses django template structure for creating pages.</p>
+
+<p>You will have to run Hyde to generate the static content that comprises the site at least once:</p>
+
+<p><code>hyde gen</code></p>
+
+<p>This will generate static content, stored in the 'deploy' directory.</p>
+
+<p>To review the changes in a browser, we run Hyde as a local web server.</p>
+
+<p>Go to the root of the website repository, which contains the site.yaml file and the deploy directory:</p>
+
+<p><code>cd ~/githubwork/docs.anaconda.org</code></p>
+
+<p>Run the Hyde server on port 8080:</p>
+
+<p><code>hyde serve -p 8080</code></p>
+
+<p>Now open a browser and go to the URL <code>http://localhost:8080</code> to review the changes.</p>
+
+<p><strong>NOTE:</strong> If you get an error check to make sure you are in the root of the repository and check to make sure you installed Hyde correctly.</p>
+
+<p>Each time you make changes, you will want to regenerate the Hyde content and review the changes in a browser. There are three ways to regenerate the content.</p>
+
+<p>1) When the Hyde server is running, you can load a page in a browser window with <code>?regen</code> added to the end of the URL. This is a "querystring" that tells Hyde to regenerate that specific page, and this method is recommended for localized changes.</p>
+
+<p>2) You can shut down the Hyde server with control-c in the terminal window, run <code>hyde gen</code>, and restart the hyde server with <code>hyde serve -p 8080</code>. This regenerates sections of the site where a diff indicates changes, and is recommended for minor changes.</p>
+
+<p>3) You can shut down the Hyde server with control-c in the terminal window, run <code>hyde gen --regen</code>, and restart the hyde server with <code>hyde serve -p 8080</code>. This regenerates the entire site and is recommended for significant changes and/or the addition of new media assets to the site. If in doubt, you can always use this method.</p>
+
+<p>Once you are satisfied with your changes, close the browser and shut down the Hyde server with control-c in the terminal window.</p>
+
+<h2>
+<a id="run-deploydraftsh-to-push-the-changes-to-docsanacondaorgdraft" class="anchor" href="#run-deploydraftsh-to-push-the-changes-to-docsanacondaorgdraft" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run deploydraft.sh to push the changes to docs.anaconda.org/draft</h2>
+
+<p>docs.anaconda.org (including docs.anaconda.org/draft) is hosted on Amazon Simple Storage Service (S3) buckets. When it was first set up the bucket was named docs.anaconda.org. However, we have since learned that bucket names containing periods can only work with http and not https. A new bucket named docs-anaconda-org was created, but as of 2015 Aug 13 we have not yet successfully migrated to it and are currently using docs.anaconda.org and http only for both uploading and downloading. This means that when you run <code>s3cmd --configure</code> you will have to set the "Use HTTPS Protocol" option to no.</p>
+
+<p>To deploy to the S3 bucket, you need the <code>s3cmd</code> tool, relevant S3 credentials, and an appropriate <code>s3cfg</code> configuration file.</p>
+
+<p>The <code>s3cmd</code> tool was installed when you created the environment.</p>
+
+<p>For S3 credentials, email it-help at continuum.io. They are different for each user and not shared with a group, and they are the same as the Access Key and Secret Key used for Amazon Web Services (AWS).</p>
+
+<p>You will need gnupg (also known as gpg). MacPorts is a good way to install it on OS X. A .pkg file is available at <a href="http://guide.macports.org/#installing.macports">http://guide.macports.org/#installing.macports</a> . After installing, close and re-open your terminal, then run <code>sudo port selfupdate</code> then <code>sudo port install gnupg</code> and then <code>type gpg</code> and copy the path that shows the location of gpg.</p>
+
+<p>To configure your s3cmd instance and create the s3cfg file, run <code>s3cmd --configure</code> and complete the prompts, using your S3 credentials as the Access Key and Secret Key. Leave the "Encryption password" blank. For "Path to GPG program" paste the path you found with <code>type gpg</code>. Set "Use HTTPS Protocol" to "No". Leave "HTTP Proxy server name" blank.</p>
+
+<p>Now you should be able to use the deploydraft.sh and deploy.sh scripts.</p>
+
+<p>Go to the root directory of the website repository and run the deploydraft.sh script:</p>
+
+<pre><code>cd ~/githubwork/docs.anaconda.org
+./scripts/deploydraft.sh
+</code></pre>
+
+<p>Review your changes at <a href="http://docs.anaconda.org/draft/">http://docs.anaconda.org/draft/</a> .</p>
+
+<h2>
+<a id="push-your-new-branch-to-github" class="anchor" href="#push-your-new-branch-to-github" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Push your new branch to GitHub</h2>
+
+<p>Add the new files to the staging area to be committed until <code>git status</code> shows that all added or modified files are staged:</p>
+
+<p><code>git add newfile.html</code></p>
+
+<p>Commit the changes and write a meaningful commit message:</p>
+
+<p><code>git commit</code></p>
+
+<p>Push your new branch to GitHub:</p>
+
+<p><code>git push origin make-some-change</code></p>
+
+<h2>
+<a id="make-a-pull-request-and-merge-your-new-branch-into-the-master-branch" class="anchor" href="#make-a-pull-request-and-merge-your-new-branch-into-the-master-branch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Make a pull request, and merge your new branch into the master branch</h2>
+
+<p>1) From <a href="https://github.com/Anaconda-Server/docs.anaconda.org/">https://github.com/Anaconda-Server/docs.anaconda.org/</a>, select the branch you created from the branches dropdown menu.</p>
+
+<p>2) Select the 'Pull Request' option.</p>
+
+<p>3) Include a meaningful message and @-tag whomever should review/merge your changes.</p>
+
+<h2>
+<a id="run-deploysh-to-push-your-changes-to-docsanacondaorg" class="anchor" href="#run-deploysh-to-push-your-changes-to-docsanacondaorg" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run deploy.sh to push your changes to docs.anaconda.org</h2>
+
+<p>Once your changes are merged into the master branch on GitHub, update your local copy:</p>
+
+<pre><code>cd ~/githubwork/docs.anaconda.org
+git checkout master
+git pull
+</code></pre>
+
+<p>Regenerate the content with Hyde:</p>
+
+<p><code>hyde gen --regen</code></p>
+
+<p>Go to the root directory of the website repository and run the deploy.sh script:</p>
+
+<pre><code>cd ~/githubwork/docs.anaconda.org
+./scripts/deploy.sh
+</code></pre>
+
+<p>Review your changes at <a href="http://docs.anaconda.org/">http://docs.anaconda.org/</a> .</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/princeofdarkness76/docs.anaconda.org">XNU-Wrapped-Python-Arduino-Experimental</a> is maintained by <a href="https://github.com/princeofdarkness76">princeofdarkness76</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
